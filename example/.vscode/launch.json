@@ -1,26 +1,32 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Dev",
+      "name": "develop",
       "request": "launch",
       "type": "dart",
-      "args": ["--flavor", "develop"]
+      "args": [
+        "--flavor",
+        "develop"
+      ]
     },
     {
-      "name": "Staging",
+      "name": "staging",
       "request": "launch",
       "type": "dart",
-      "args": ["--flavor", "staging"]
+      "args": [
+        "--flavor",
+        "staging"
+      ]
     },
     {
-      "name": "Production",
+      "name": "production",
       "request": "launch",
       "type": "dart",
-      "args": ["--flavor", "production"]
+      "args": [
+        "--flavor",
+        "production"
+      ]
     }
   ]
 }

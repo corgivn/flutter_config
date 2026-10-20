@@ -2,13 +2,21 @@
 
 **The following steps are required for Android**
 
-You need to manually apply a plugin to your app, from `android/app/build.gradle`:
+You need to manually apply a script to your app, right below the `plugins { ... }` block.
 
-Right below `apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"`
+In `android/app/build.gradle.kts`:
 
-add the following line:
+```kotlin
+apply(from = "${project(":flutter_config").projectDir}/dotenv.gradle.kts")
+```
 
-`apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"`
+Or in `android/app/build.gradle`:
+
+```groovy
+apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle.kts"
+```
+
+The script enables `buildConfig` and `resValues` build features automatically.
 
 **Building a release version**
 
@@ -62,16 +70,28 @@ The same environment variable can be used to assemble releases with a different 
 $ cd android && ENVFILE=.env.staging ./gradlew assembleRelease
 ```
 
-Alternatively, you can define a map in `build.gradle` associating builds with env files. Do it before the `apply from` call, and use build cases in lowercase, like:
+Alternatively, you can define a map associating build variants with env files. Do it before the `apply` call, and use variant names in lowercase, like:
 
+```kotlin
+// build.gradle.kts
+extra["envConfigFiles"] = mapOf(
+    "debug" to ".env.development",
+    "release" to ".env.production",
+    "anothercustombuild" to ".env",
+)
+
+apply(from = "${project(":flutter_config").projectDir}/dotenv.gradle.kts")
 ```
+
+```groovy
+// build.gradle
 project.ext.envConfigFiles = [
     debug: ".env.development",
     release: ".env.production",
     anothercustombuild: ".env",
 ]
 
-apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
+apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle.kts"
 ```
 
 ## Different Package Names
