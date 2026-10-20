@@ -8,12 +8,13 @@
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    // then read individual keys like:
-     // NSString *apiUrl = [FlutterConfigPlugin envFor:@"API_URL"];
-  [GeneratedPluginRegistrant registerWithRegistry:self];
-  // Override point for customization after application launch.
+  // then read individual keys like:
+  // NSString *apiUrl = [FlutterConfigPlugin envFor:@"API_URL"];
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (void)didInitializeImplicitFlutterEngine:(NSObject<FlutterImplicitEngineBridge>*)engineBridge {
+  [GeneratedPluginRegistrant registerWithRegistry:engineBridge.pluginRegistry];
 }
 
 @end

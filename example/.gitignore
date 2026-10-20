@@ -67,6 +67,8 @@
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/.envfile
 **/ios/Flutter/tmp.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/prebuild.log
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3

@@ -1,12 +1,34 @@
 ## iOS Advanced Setup
 
+The plugin requires iOS 15.0 or later. Make sure `IPHONEOS_DEPLOYMENT_TARGET` of your `Runner` target
+(and `platform :ios` in your `Podfile`, if you use CocoaPods) is at least `15.0`.
+
+### Swift Package Manager
+
+Flutter builds plugins with Swift Package Manager by default. Swift packages cannot run build scripts,
+so when your app uses Swift Package Manager you need to add one Run Script build phase that writes the
+env values into your app bundle. With CocoaPods this step is optional, the plugin generates the values itself.
+
+In Xcode, select the `Runner` target > Build Phases > `+` > New Run Script Phase, uncheck
+"Based on dependency analysis" and paste:
+
+```sh
+FLUTTER_CONFIG_DIR=$(ruby -rjson -e 'puts JSON.parse(File.read(ARGV[0]))["plugins"]["ios"].find { |p| p["name"] == "flutter_config" }["path"]' "${SRCROOT}/../.flutter-plugins-dependencies")
+"${FLUTTER_CONFIG_DIR%/}/ios/Classes/BuildDotenvPlist.rb" "${SRCROOT}/" "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/flutter_config.plist"
+```
+
+The script reads the same env file as the rest of this guide (`.envfile`, `ENVFILE` or `.env`)
+and writes `flutter_config.plist` into the app bundle. The plugin reads it at runtime.
+
+### Reading variables natively
+
 No additional setup is required is you are only reading env varibles from Obj-C/Swift code.
 
 Read variables declared in `.env` from your Obj-C classes like:
 
 ```objective-c
-// import header
-#import "FlutterConfigPlugin.h"
+// import the module (works with both Swift Package Manager and CocoaPods)
+@import flutter_config;
 
 // then read individual keys like:
 NSString *apiUrl = [FlutterConfigPlugin envFor:@"API_URL"];
@@ -44,8 +66,11 @@ Extra steps are required if you are reading env varibles from your `info.plist` 
    ```
 
    ```
-   ${SRCROOT}/.symlinks/plugins/flutter_config/ios/Classes/BuildXCConfig.rb ${SRCROOT}/ ${SRCROOT}/Flutter/tmp.xcconfig
+   FLUTTER_CONFIG_DIR=$(ruby -rjson -e 'puts JSON.parse(File.read(ARGV[0]))["plugins"]["ios"].find { |p| p["name"] == "flutter_config" }["path"]' "${SRCROOT}/../.flutter-plugins-dependencies")
+   "${FLUTTER_CONFIG_DIR%/}/ios/Classes/BuildXCConfig.rb" ${SRCROOT}/ ${SRCROOT}/Flutter/tmp.xcconfig
    ```
+
+   The old `${SRCROOT}/.symlinks/plugins/flutter_config/...` path only exists when the app uses CocoaPods.
 
 4. Make sure you select `Runner` from the `Provide build settings from` dropdown
 

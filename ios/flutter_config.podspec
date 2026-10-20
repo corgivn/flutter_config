@@ -8,15 +8,16 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 Config Variables for your Flutter Apps.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/ByneappLLC/flutter_config'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Byneapp' => 'https://github.com/ByneappLLC' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files = 'flutter_config/Sources/flutter_config/**/*.{h,m}'
+  s.public_header_files = 'flutter_config/Sources/flutter_config/include/**/*.h'
+  s.resource_bundles = { 'flutter_config_privacy' => ['flutter_config/Sources/flutter_config/PrivacyInfo.xcprivacy'] }
   s.dependency 'Flutter'
+  s.platform = :ios, '15.0'
 
-  # s.ios.deployment_target = '10.0'
   s.script_phase = {
     name: 'Config codegen',
     script: %(
@@ -25,7 +26,6 @@ HOST_PATH="$SRCROOT/../"
 "${PODS_TARGET_SRCROOT}/Classes/BuildDotenvConfig.rb" "$HOST_PATH" "${PODS_TARGET_SRCROOT}/Classes"
 ),
     execution_position: :before_compile,
-    input_files: ['$(SRCROOT)/Classes/BuildDotenvConfig.rb']
+    always_out_of_date: '1'
   }
 end
-

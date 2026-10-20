@@ -56,7 +56,9 @@ Install the latest version of the plugin
 
 Refer to [Android Setup Guide](./doc/ANDROID.md) for initial setup and advanced options
 
-No additional setup is required for iOS, however, for advanced usage refer to the [iOS Setup Guide](./doc/IOS.md)
+On iOS, apps built with Swift Package Manager (the default since Flutter 3.44) need one Run Script build phase, see [Swift Package Manager](./doc/IOS.md#swift-package-manager). Apps using CocoaPods need no additional setup. For advanced usage refer to the [iOS Setup Guide](./doc/IOS.md)
+
+The plugin requires iOS 15.0 or later.
 
 ## Testing
 

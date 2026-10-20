@@ -1,3 +1,16 @@
+## 3.0.0
+
+- **Breaking change**. Updates the minimum supported SDK version to Flutter 3.44/Dart 3.12.
+- **Breaking change**. Raises the minimum iOS version to 15.0, the lowest deployment target Xcode 27 accepts.
+- Migrates to built-in Kotlin.
+- Migrates Android Gradle files to Kotlin DSL and AGP 9.
+- Removes the deprecated v1 embedding `registerWith`.
+- Migrates `dotenv.gradle` to `dotenv.gradle.kts` using the new AGP variant API. Env values are now applied per build variant, and `buildConfig`/`resValues` are enabled automatically. `dotenv.gradle` still works and forwards to the new script.
+- Adds Swift Package Manager support on iOS. Apps using Swift Package Manager need a Run Script build phase that runs `BuildDotenvPlist.rb` (see `doc/IOS.md`). CocoaPods apps keep working without changes.
+- Adds an iOS privacy manifest.
+- Fixes a crash in `ReadDotEnv.rb` when only the fallback `.env` file exists.
+- Adds explicit return types to `loadEnvVariables` (`Future<void>`) and `loadValueForTesting` (`void`).
+
 ## 2.0.2
 
 - Update deprecated Ruby code in iOS script.

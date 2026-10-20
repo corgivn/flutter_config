@@ -16,7 +16,7 @@ dotenv, custom_env = read_dot_env(envs_root)
 puts "read dotenv #{dotenv}"
 
 # create obj file that sets DOT_ENV as a NSDictionary
-dotenv_objc = dotenv.map { |k, v| %(@"#{k}":@"#{v.chomp}") }.join(',')
+dotenv_objc = dotenv.map { |k, v| %(@"#{k}":@"#{v.chomp.gsub('"', '\"')}") }.join(',')
 template = <<EOF
   #define DOT_ENV @{ #{dotenv_objc} };
 EOF

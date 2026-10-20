@@ -45,18 +45,15 @@ def read_dot_env(envs_root)
         # try as absolute path
         defaultEnvPath = defaultEnvFile
       end
-      defaultRaw = File.read(defaultEnvPath)
-      raw = defaultRaw + "\n" + raw if defaultRaw
+      raw = File.read(defaultEnvPath)
     end
 
     raw.split("\n").inject({}) do |h, line|
       m = line.match(dotenv_pattern)
       next h if m.nil?
 
-      key = m[:key]
-      # Ensure string (in case of empty value) and escape any quotes present in the value.
-      val = m[:val].to_s.gsub('"', '\"')
-      h.merge(key => val)
+      # Ensure string in case of empty value. Callers escape for their own output format.
+      h.merge(m[:key] => m[:val].to_s)
     end
     rescue Errno::ENOENT
       puts('**************************')
